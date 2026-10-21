@@ -56,8 +56,10 @@ public class UserService {
         if (!userRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь не найден");
         }
+        User user = findOrThrow(id);
+        String email = user.getEmail();
         userRepository.deleteById(id);
-        publish(UserEvent.deleted(id));
+        publish(UserEvent.deleted(id,email));
     }
 
     private User findOrThrow(int id) {
